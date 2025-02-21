@@ -25,13 +25,13 @@ public class Main {
 				student[num][j] = Integer.parseInt(st.nextToken()); // 좋아하는 학생들
 			}
 
-			int bestX = n - 1; // 최적 x 좌표
-			int bestY = n - 1; // 최적 y 좌표
-			int bestLike = 0; // 최적자리 인접한 칸에 좋아하는 학생 수
-			int bestBlank = 0;// 최적자리 인접한 칸에 빈자리 수
+			int bestX = -1; // 최적 x 좌표
+			int bestY = -1; // 최적 y 좌표
+			int bestLike = -1; // 최적자리 인접한 칸에 좋아하는 학생 수
+			int bestBlank = -1; // 최적자리 인접한 칸에 빈자리 수
 
-			for (int x = n - 1; x >= 0; x--) { // 모든 칸 돌기
-				for (int y = n - 1; y >= 0; y--) {
+			for (int x = 0; x < n; x++) { // 모든 칸 돌기
+				for (int y = 0; y < n; y++) {
 					if (seats[x][y] == 0) { // 빈칸만 확인
 						int like = 0; // 인접한 칸에 좋아하는 학생 수
 						int blank = 0; // 인접한 칸에 빈칸 수
@@ -53,8 +53,8 @@ public class Main {
 							}
 						}
 
-						// 인접한 칸에 좋아하는 학생이 더 많을때, 같다면 빈칸이 많거나 같을때 갱신
-						if (like > bestLike || (like == bestLike && blank >= bestBlank)) {
+						// 인접한 칸에 좋아하는 학생이 더 많을때, 같다면 빈칸이 많을때 갱신
+						if (like > bestLike || (like == bestLike && blank > bestBlank)) {
 							bestX = x;
 							bestY = y;
 							bestLike = like;
