@@ -47,32 +47,39 @@ public class Solution {
 
 			combs = new ArrayList<>();
 			comb = new ArrayList<>();
+
 			for (int i = 1; i <= n; i++) {
 				combination(0, 0, n, i);
 			}
 
 			int scoreSum, kSum, bestScore = 0;
+
 			for (ArrayList<Integer> i : combs) {
 				scoreSum = 0;
 				kSum = 0;
+				boolean flag = true;
 
 				for (int j = 0; j < i.size(); j++) {
 					kSum += k[i.get(j)];
 
 					if (kSum > l) {
+						flag = false;
 						break;
 					}
 
 					scoreSum += score[i.get(j)];
 				}
 
-				bestScore = scoreSum > bestScore ? scoreSum : bestScore;
+				if (flag) {
+					bestScore = Math.max(scoreSum, bestScore);
+				}
 			}
 
 			sb.append("#").append(tc).append(" ").append(bestScore).append("\n");
 		}
 
 		System.out.println(sb.toString());
+
 		br.close();
 	}
 }
