@@ -8,12 +8,7 @@ public class Main {
 
 		int n = Integer.parseInt(br.readLine());
 
-		int point = 4;
-
-		for (int i = 1; i <= n; i++) {
-			point += Math.pow(2, i - 1) * (Math.pow(2, i - 1) + 1);
-			point += (Math.pow(2, i) + 1) * Math.pow(2, i - 1);
-		}
+		int point = (int) Math.pow(Math.pow(2, n) + 1, 2);
 
 		System.out.println(point);
 	}
