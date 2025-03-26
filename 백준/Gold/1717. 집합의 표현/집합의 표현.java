@@ -4,23 +4,41 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-	static int[] num;
+	static int[] parent;
+	static int[] rank;
 
-	static void union(int a, int b) {
-		// 대표 노드 찾아서 연결
-		a = find(a);
-		b = find(b);
-		if (a != b) {
-			num[b] = a; // 두개 연결
+	static void makeSet(int size) {
+		parent = new int[size];
+		rank = new int[size];
+		for (int i = 0; i < size; i++) {
+			parent[i] = i;
+			rank[i] = 0;
+		}
+	}
+
+	static void union(int a, int b) { // 대표 노드 찾아서 연결
+		int rootA = find(a);
+		int rootB = find(b);
+
+		if (rootA == rootB) {
+			return;
+		}
+
+		if (rank[rootA] < rank[rootB]) { // a의 높이가 더 작으면
+			parent[rootA] = rootB; // b에 a를 붙임
+		} else if (rank[rootA] > rank[rootB]) { // b의 높이가 더 작으면
+			parent[rootB] = rootA;// a에 b를 붙임
+		} else { // 같다면
+			parent[rootB] = rootA; // a에 b를 붙이고
+			rank[rootA]++; // a의 높이를 하나 높임
 		}
 	}
 
 	static int find(int a) {
-		if (a == num[a]) {
+		if (a == parent[a]) {
 			return a;
-		} else {
-			return num[a] = find(num[a]); // value를 index로 바꿔서 또 찾기
 		}
+		return parent[a] = find(parent[a]); // value를 index로 바꿔서 또 찾기, 경로 압축
 	}
 
 	static boolean checkSame(int a, int b) {
@@ -41,11 +59,7 @@ public class Main {
 		int n = Integer.parseInt(st.nextToken());
 		int m = Integer.parseInt(st.nextToken());
 
-		num = new int[n + 1];
-
-		for (int i = 0; i <= n; i++) {
-			num[i] = i;
-		}
+		makeSet(n + 1);
 
 		for (int i = 0; i < m; i++) {
 			st = new StringTokenizer(br.readLine());
