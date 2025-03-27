@@ -17,7 +17,7 @@ public class Main {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 
 			int h = Integer.parseInt(st.nextToken());
-			int w = Integer.parseInt(st.nextToken());
+			Integer.parseInt(st.nextToken());
 			int n = Integer.parseInt(st.nextToken());
 
 			int f = n % h == 0 ? h : n % h;
