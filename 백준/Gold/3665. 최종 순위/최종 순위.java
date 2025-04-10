@@ -3,14 +3,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 public class Main {
 	static List<Integer> result;
 
-	private static String topologicalSort(int n, List<List<Integer>> graph) {
+	private static String topologicalSort(int n, List<Set<Integer>> graph) {
 		int[] inDegree = new int[n + 1];
 
 		for (int i = 1; i <= n; i++) {
@@ -26,13 +28,9 @@ public class Main {
 			}
 		}
 
-		if (queue.isEmpty()) {
-			return "IMPOSSIBLE";
-		}
-
 		result = new ArrayList<>();
 		while (!queue.isEmpty()) {
-			if (queue.size() != 1) {
+			if (queue.size() > 1) {
 				return "?";
 			}
 
@@ -49,7 +47,7 @@ public class Main {
 		}
 
 		if (result.size() == n) {
-			return "true";
+			return "OK";
 		} else {
 			return "IMPOSSIBLE";
 		}
@@ -64,9 +62,9 @@ public class Main {
 		for (int tc = 0; tc < t; tc++) {
 			int n = Integer.parseInt(br.readLine());
 
-			List<List<Integer>> graph = new ArrayList<>();
+			List<Set<Integer>> graph = new ArrayList<>();
 			for (int i = 0; i <= n; i++) {
-				graph.add(new ArrayList<>());
+				graph.add(new HashSet<>());
 			}
 
 			StringTokenizer st = new StringTokenizer(br.readLine());
@@ -90,25 +88,29 @@ public class Main {
 				int a = Integer.parseInt(st.nextToken());
 				int b = Integer.parseInt(st.nextToken());
 
-				if (graph.get(a).contains(Integer.valueOf(b))) {
-					graph.get(a).remove(Integer.valueOf(b));
+				if (graph.get(a).contains(b)) {
+					graph.get(a).remove(b);
 					graph.get(b).add(a);
 				} else {
-					graph.get(b).remove(Integer.valueOf(a));
+					graph.get(b).remove(a);
 					graph.get(a).add(b);
 				}
 			}
 
 			String flag = topologicalSort(n, graph);
 
-			if (flag.equals("true")) {
+			switch (flag) {
+			case "OK":
 				for (int i : result) {
 					sb.append(i).append(" ");
 				}
-			} else if (flag.equals("?")) {
+				break;
+			case "?":
 				sb.append("?");
-			} else if (flag.equals("IMPOSSIBLE")) {
+				break;
+			case "IMPOSSIBLE":
 				sb.append("IMPOSSIBLE");
+				break;
 			}
 			sb.append("\n");
 		}
