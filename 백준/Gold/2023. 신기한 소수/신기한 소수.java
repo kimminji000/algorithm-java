@@ -20,19 +20,16 @@ public class Main {
 		return true;
 	}
 
-	private static void dfs(String num, int cnt) {
-		if (!isPrime(Integer.parseInt(num))) {
-			return;
-		}
-
-		if (cnt == n) {
+	private static void dfs(int num, int depth) {
+		if (depth == n) {
 			sb.append(num).append("\n");
 			return;
 		}
 
-		if (cnt < n) {
-			for (int j = 1; j <= 9; j++) {
-				dfs(num + Integer.toString(j), cnt + 1);
+		for (int i = 1; i <= 9; i += 2) {
+			int next = num * 10 + i;
+			if (isPrime(next)) {
+				dfs(next, depth + 1);
 			}
 		}
 	}
@@ -43,10 +40,10 @@ public class Main {
 
 		n = Integer.parseInt(br.readLine());
 
-		dfs("2", 1);
-		dfs("3", 1);
-		dfs("5", 1);
-		dfs("7", 1);
+		int[] start = { 2, 3, 5, 7 };
+		for (int num : start) {
+			dfs(num, 1);
+		}
 
 		System.out.println(sb.toString());
 	}
