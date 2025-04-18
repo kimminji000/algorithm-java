@@ -5,31 +5,25 @@ import java.util.StringTokenizer;
 
 public class Main {
 	static char[][] board;
-	static boolean[][] visited;
+	static boolean[] alpha;
 	static int r, c, maxCnt;
 	static int[] dx = { -1, 1, 0, 0 };
 	static int[] dy = { 0, 0, -1, 1 };
 
-	private static void dfs(int x, int y, String str, int cnt) {
-		visited[x][y] = true;
+	private static void dfs(int x, int y, int cnt) {
+		alpha[board[x][y] - 'A'] = true;
 		maxCnt = Math.max(cnt, maxCnt);
 
 		for (int i = 0; i < 4; i++) {
 			int nx = x + dx[i];
 			int ny = y + dy[i];
 
-			if (!(nx >= 0 && nx < r && ny >= 0 && ny < c) || visited[nx][ny]) {
-				continue;
+			if ((nx >= 0 && nx < r && ny >= 0 && ny < c) && !alpha[board[nx][ny] - 'A']) {
+				dfs(nx, ny, cnt + 1);
 			}
-
-			if (str.contains(Character.toString(board[nx][ny]))) {
-				continue;
-			}
-
-			dfs(nx, ny, str + Character.toString(board[nx][ny]), cnt + 1);
 		}
 
-		visited[x][y] = false;
+		alpha[board[x][y] - 'A'] = false;
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -41,7 +35,7 @@ public class Main {
 		c = Integer.parseInt(st.nextToken());
 
 		board = new char[r][c];
-		visited = new boolean[r][c];
+		alpha = new boolean[26];
 
 		for (int i = 0; i < r; i++) {
 			String str = br.readLine();
@@ -51,7 +45,7 @@ public class Main {
 			}
 		}
 
-		dfs(0, 0, Character.toString(board[0][0]), 1);
+		dfs(0, 0, 1);
 
 		System.out.println(maxCnt);
 	}
