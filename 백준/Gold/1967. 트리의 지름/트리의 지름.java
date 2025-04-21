@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 public class Main {
 	static List<List<Node>> graph;
 	static boolean[] visited;
-	static int maxLength;
+	static int maxLength, farthestNode;
 
 	static class Node {
 		int vertex;
@@ -21,11 +21,15 @@ public class Main {
 		}
 	}
 
-	private static void dfs(int i, int length) {
-		visited[i] = true;
-		maxLength = Math.max(maxLength, length);
+	private static void dfs(int curr, int length) {
+		visited[curr] = true;
 
-		for (Node next : graph.get(i)) {
+		if (length > maxLength) {
+			maxLength = length;
+			farthestNode = curr;
+		}
+
+		for (Node next : graph.get(curr)) {
 			if (!visited[next.vertex]) {
 				dfs(next.vertex, length + next.weight);
 			}
@@ -55,10 +59,15 @@ public class Main {
 			graph.get(b).add(new Node(a, c));
 		}
 
-		for (int i = 1; i <= n; i++) {
-			visited = new boolean[n + 1];
-			dfs(i, 0);
-		}
+		// 1단계: 아무 노드(보통 1번)에서 가장 먼 노드 찾기
+		visited = new boolean[n + 1];
+		maxLength = 0;
+		dfs(1, 0);
+
+		// 2단계: 찾은 노드에서 다시 DFS해서 트리 지름 구하기
+		visited = new boolean[n + 1];
+		maxLength = 0;
+		dfs(farthestNode, 0);
 
 		System.out.println(maxLength);
 	}
