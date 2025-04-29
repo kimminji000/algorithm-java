@@ -21,23 +21,20 @@ public class Main {
 		Arrays.sort(num);
 
 		int left = 0, right = n - 1;
-		int sum = Integer.MAX_VALUE, bestL = 0, bestR = n - 1;
+		int minSum = Integer.MAX_VALUE, bestL = 0, bestR = n - 1;
 
 		while (left < right) {
-			if (num[left] + num[right] == 0) {
-				sum = 0;
+			int sum = num[left] + num[right];
+
+			if (minSum > Math.abs(sum)) {
+				minSum = Math.abs(sum);
 				bestL = left;
 				bestR = right;
+			}
+
+			if (sum == 0) {
 				break;
-			}
-
-			if (sum > Math.abs(num[left] + num[right])) {
-				sum = Math.abs(num[left] + num[right]);
-				bestL = left;
-				bestR = right;
-			}
-
-			if (num[left] + num[right] < 0) {
+			} else if (sum < 0) {
 				left++;
 			} else {
 				right--;
