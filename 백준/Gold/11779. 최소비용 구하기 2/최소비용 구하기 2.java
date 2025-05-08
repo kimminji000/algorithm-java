@@ -10,7 +10,6 @@ import java.util.StringTokenizer;
 
 public class Main {
 	private static List<Node>[] graph;
-	private static int[] dist;
 	private static List<Integer> order;
 
 	private static class Node implements Comparable<Node> {
@@ -30,15 +29,14 @@ public class Main {
 	}
 
 	private static int dijkstra(int n, int start, int end) {
-		dist = new int[n + 1];
+		int[] dist = new int[n + 1];
 		Arrays.fill(dist, Integer.MAX_VALUE);
 		dist[start] = 0;
 
+		int[] prev = new int[n + 1];
+
 		PriorityQueue<Node> pq = new PriorityQueue<>();
 		pq.offer(new Node(start, 0));
-
-		order = new ArrayList<>();
-		int[] parent = new int[n + 1];
 
 		while (!pq.isEmpty()) {
 			Node curr = pq.poll();
@@ -50,19 +48,16 @@ public class Main {
 			for (Node next : graph[curr.vertex]) {
 				if (dist[next.vertex] > dist[curr.vertex] + next.weight) {
 					dist[next.vertex] = dist[curr.vertex] + next.weight;
+					prev[next.vertex] = curr.vertex;
 					pq.offer(new Node(next.vertex, dist[next.vertex]));
-					parent[next.vertex] = curr.vertex;
 				}
 			}
 		}
 
-		int check = end;
-		order.add(end);
-		while (check != start) {
-			order.add(parent[check]);
-			check = parent[check];
+		order = new ArrayList<>();
+		for (int i = end; i != 0; i = prev[i]) {
+			order.add(i);
 		}
-
 		Collections.reverse(order);
 
 		return dist[end];
@@ -84,11 +79,11 @@ public class Main {
 		for (int i = 0; i < m; i++) {
 			st = new StringTokenizer(br.readLine());
 
-			int a = Integer.parseInt(st.nextToken());
-			int b = Integer.parseInt(st.nextToken());
-			int c = Integer.parseInt(st.nextToken());
+			int u = Integer.parseInt(st.nextToken());
+			int v = Integer.parseInt(st.nextToken());
+			int w = Integer.parseInt(st.nextToken());
 
-			graph[a].add(new Node(b, c));
+			graph[u].add(new Node(v, w));
 		}
 
 		st = new StringTokenizer(br.readLine());
