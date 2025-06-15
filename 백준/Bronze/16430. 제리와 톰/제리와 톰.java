@@ -12,15 +12,6 @@ public class Main {
 		int a = Integer.parseInt(st.nextToken());
 		int b = Integer.parseInt(st.nextToken());
 
-		int c = b - a;
-
-		for (int i = 9; i > 1; i--) {
-			if (b % i == 0 && c % i == 0) {
-				b /= i;
-				c /= i;
-			}
-		}
-
-		System.out.printf("%d %d", c, b);
+		System.out.println((b - a) + " " + b);
 	}
 }
