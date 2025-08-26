@@ -9,20 +9,19 @@ public class Main {
 		String str1 = br.readLine();
 		String str2 = br.readLine();
 
-		int[] alpha1 = new int[26];
-		int[] alpha2 = new int[26];
+		int[] alpha = new int[26];
 
 		for (int i = 0; i < str1.length(); i++) {
-			alpha1[str1.charAt(i) - 'a']++;
+			alpha[str1.charAt(i) - 'a']++;
 		}
 		for (int i = 0; i < str2.length(); i++) {
-			alpha2[str2.charAt(i) - 'a']++;
+			alpha[str2.charAt(i) - 'a']--;
 		}
 
 		int cnt = 0;
 
 		for (int i = 0; i < 26; i++) {
-			cnt += Math.abs(alpha1[i] - alpha2[i]);
+			cnt += Math.abs(alpha[i]);
 		}
 
 		System.out.println(cnt);
