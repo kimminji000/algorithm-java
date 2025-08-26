@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -19,20 +18,14 @@ public class Main {
 
 		int x = Integer.parseInt(br.readLine());
 
-		Arrays.sort(num);
+		int[] number = new int[2000001];
 
 		int cnt = 0;
-		int start = 0, end = n - 1;
-
-		while (start < end) {
-			if (num[start] + num[end] == x) {
+		for (int i = 0; i < n; i++) {
+			if (num[i] <= x && number[x - num[i]] == 1) {
 				cnt++;
-				start++;
-				end--;
-			} else if (num[start] + num[end] < x) {
-				start++;
 			} else {
-				end--;
+				number[num[i]]++;
 			}
 		}
 
