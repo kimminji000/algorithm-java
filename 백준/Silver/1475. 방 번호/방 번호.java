@@ -1,33 +1,29 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.Arrays;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		String n = br.readLine();
+		int n = Integer.parseInt(br.readLine());
 
 		int[] num = new int[10];
 
-		for (int i = 0; i < n.length(); i++) {
-			num[(int) (n.charAt(i) - '0')]++;
+		while (n > 0) {
+			num[n % 10]++;
+			n /= 10;
 		}
 
-		if ((num[6] + num[9]) % 2 != 0) {
-			num[6] = (num[6] + num[9]) / 2 + 1;
-		} else {
-			num[6] = (num[6] + num[9]) / 2;
+		num[6] = (num[6] + num[9]) % 2 == 0 ? (num[6] + num[9]) / 2 : (num[6] + num[9]) / 2 + 1;
+		num[9] = 0;
+
+		int max = 0;
+
+		for (int i = 0; i < 9; i++) {
+			max = Math.max(max, num[i]);
 		}
-		num[9] = num[6];
 
-		bw.write(Integer.toString(Arrays.stream(num).max().getAsInt()));
-
-		bw.flush();
-		bw.close();
+		System.out.println(max);
 	}
 }
