@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 public class Main {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
 
 		String str = br.readLine();
 
@@ -13,8 +14,6 @@ public class Main {
 		for (int i = 0; i < str.length(); i++) {
 			alpha[str.charAt(i) - 'a']++;
 		}
-
-		StringBuilder sb = new StringBuilder();
 
 		for (int i = 0; i < 26; i++) {
 			sb.append(alpha[i]).append(" ");
