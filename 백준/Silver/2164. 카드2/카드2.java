@@ -16,14 +16,9 @@ public class Main {
 			queue.offer(i);
 		}
 
-		int cnt = 0;
-		while (queue.size() != 1) {
-			cnt++;
-			if (cnt % 2 == 1) {
-				queue.poll();
-			} else {
-				queue.offer(queue.poll());
-			}
+		while (queue.size() > 1) {
+			queue.poll();
+			queue.add(queue.poll());
 		}
 
 		System.out.println(queue.peek());
