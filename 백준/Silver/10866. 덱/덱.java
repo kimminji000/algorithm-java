@@ -4,10 +4,10 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-	static class MyDeque {
+	private static class MyDeque {
 		int front = 10000;
 		int rear = 10000;
-		int[] arr = new int[20000];
+		int[] arr = new int[20001];
 
 		void push_front(int x) {
 			arr[--front] = x;
@@ -18,17 +18,17 @@ public class Main {
 		}
 
 		int pop_front() {
-			if (rear == front)
+			if (empty() == 1) {
 				return -1;
-			else
-				return arr[front++];
+			}
+			return arr[front++];
 		}
 
 		int pop_back() {
-			if (rear == front)
+			if (empty() == 1) {
 				return -1;
-			else
-				return arr[--rear];
+			}
+			return arr[--rear];
 		}
 
 		int size() {
@@ -36,54 +36,71 @@ public class Main {
 		}
 
 		int empty() {
-			if (rear == front)
+			if (front == rear) {
 				return 1;
-			else
-				return 0;
+			}
+			return 0;
 		}
 
 		int front() {
-			if (rear == front)
+			if (empty() == 1) {
 				return -1;
-			else
-				return arr[front];
+			}
+			return arr[front];
 		}
 
 		int back() {
-			if (rear == front)
+			if (empty() == 1) {
 				return -1;
-			else
-				return arr[rear - 1];
+			}
+			return arr[rear - 1];
 		}
 	}
 
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-		MyDeque myDeque = new MyDeque();
+		StringBuilder sb = new StringBuilder();
+		StringTokenizer st;
 
 		int n = Integer.parseInt(br.readLine());
 
+		MyDeque deque = new MyDeque();
+
 		for (int i = 0; i < n; i++) {
-			StringTokenizer st = new StringTokenizer(br.readLine());
+			st = new StringTokenizer(br.readLine());
+
 			String str = st.nextToken();
 
-			if (str.equals("push_front"))
-				myDeque.push_front(Integer.parseInt(st.nextToken()));
-			else if (str.equals("push_back"))
-				myDeque.push_back(Integer.parseInt(st.nextToken()));
-			else if (str.equals("pop_front"))
-				System.out.println(myDeque.pop_front());
-			else if (str.equals("pop_back"))
-				System.out.println(myDeque.pop_back());
-			else if (str.equals("size"))
-				System.out.println(myDeque.size());
-			else if (str.equals("empty"))
-				System.out.println(myDeque.empty());
-			else if (str.equals("front"))
-				System.out.println(myDeque.front());
-			else if (str.equals("back"))
-				System.out.println(myDeque.back());
+			switch (str) {
+			case "push_front":
+				int x = Integer.parseInt(st.nextToken());
+				deque.push_front(x);
+				break;
+			case "push_back":
+				int y = Integer.parseInt(st.nextToken());
+				deque.push_back(y);
+				break;
+			case "pop_front":
+				sb.append(deque.pop_front()).append("\n");
+				break;
+			case "pop_back":
+				sb.append(deque.pop_back()).append("\n");
+				break;
+			case "size":
+				sb.append(deque.size()).append("\n");
+				break;
+			case "empty":
+				sb.append(deque.empty()).append("\n");
+				break;
+			case "front":
+				sb.append(deque.front()).append("\n");
+				break;
+			case "back":
+				sb.append(deque.back()).append("\n");
+				break;
+			}
 		}
+
+		System.out.println(sb.toString());
 	}
 }
