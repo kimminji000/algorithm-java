@@ -4,72 +4,74 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-	static class MyStack {
+	private static class MyStack {
+		int top = 0;
 		int[] arr = new int[10000];
-		int ptr = -1;
 
 		void push(int x) {
-			arr[++ptr] = x;
+			arr[top++] = x;
 		}
 
 		int pop() {
-			if (ptr < 0) {
-				System.out.println("-1");
+			if (empty() == 1) {
 				return -1;
-			} else {
-				System.out.println(arr[ptr]);
-				return arr[ptr--];
 			}
+			return arr[--top];
 		}
 
 		int size() {
-			System.out.println(ptr + 1);
-			return ptr + 1;
+			return top;
 		}
 
 		int empty() {
-			if (ptr < 0) {
-				System.out.println(1);
+			if (top == 0) {
 				return 1;
-			} else {
-				System.out.println(0);
-				return 0;
 			}
+			return 0;
 		}
 
 		int top() {
-			if (ptr < 0) {
-				System.out.println(-1);
+			if (empty() == 1) {
 				return -1;
-			} else {
-				System.out.println(arr[ptr]);
-				return arr[ptr];
 			}
+			return arr[top - 1];
 		}
 	}
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-		MyStack myStack = new MyStack();
+		StringBuilder sb = new StringBuilder();
+		StringTokenizer st;
 
 		int n = Integer.parseInt(br.readLine());
 
+		MyStack myStack = new MyStack();
+
 		for (int i = 0; i < n; i++) {
-			StringTokenizer st = new StringTokenizer(br.readLine());
+			st = new StringTokenizer(br.readLine());
+
 			String str = st.nextToken();
 
-			if (str.equals("push")) {
-				myStack.push(Integer.parseInt(st.nextToken()));
-			} else if (str.equals("pop")) {
-				myStack.pop();
-			} else if (str.equals("size")) {
-				myStack.size();
-			} else if (str.equals("empty")) {
-				myStack.empty();
-			} else if (str.equals("top")) {
-				myStack.top();
+			switch (str) {
+			case "push":
+				int x = Integer.parseInt(st.nextToken());
+				myStack.push(x);
+				break;
+			case "pop":
+				sb.append(myStack.pop()).append("\n");
+				break;
+			case "size":
+				sb.append(myStack.size()).append("\n");
+				break;
+			case "empty":
+				sb.append(myStack.empty()).append("\n");
+				break;
+			case "top":
+				sb.append(myStack.top()).append("\n");
+				break;
 			}
 		}
+
+		System.out.println(sb.toString());
 	}
 }
