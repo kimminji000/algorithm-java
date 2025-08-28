@@ -1,40 +1,46 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class Main {
-	public static void main(String[] args) throws NumberFormatException, IOException {
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
 
 		int n = Integer.parseInt(br.readLine());
 
-		Stack<Integer> stk = new Stack<Integer>();
-		stk.push(0);
+		Deque<Integer> stack = new ArrayDeque<>();
+		int index = 1;
 
-		int cnt = 1;
-        StringBuilder str = new StringBuilder();
-		Boolean flag = true;
+		boolean flag = true;
 
 		for (int i = 0; i < n; i++) {
-			int num = Integer.parseInt(br.readLine());
-			if (stk.peek() > num) {
+			int k = Integer.parseInt(br.readLine());
+
+			if (stack.isEmpty() || stack.peek() < k) {
+				stack.push(index++);
+				sb.append("+").append("\n");
+
+				while (stack.peek() != k) {
+					stack.push(index++);
+					sb.append("+").append("\n");
+				}
+				
+				stack.pop();
+				sb.append("-").append("\n");
+			} else if (stack.peek() > k) {
 				flag = false;
 				break;
+			} else {
+				stack.pop();
+				sb.append("-").append("\n");
 			}
-			if (stk.peek() < num) {
-				while (stk.peek() != num) {
-					stk.push(cnt);
-					str.append("+\n");
-					cnt++;
-				}
-			}
-			stk.pop();
-			str.append("-\n");
 		}
-		
-		if (flag == true) {
-			System.out.println(str);
+
+		if (flag) {
+			System.out.println(sb.toString());
 		} else {
 			System.out.println("NO");
 		}
