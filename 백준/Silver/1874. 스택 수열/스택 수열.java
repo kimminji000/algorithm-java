@@ -19,23 +19,17 @@ public class Main {
 		for (int i = 0; i < n; i++) {
 			int k = Integer.parseInt(br.readLine());
 
-			if (stack.isEmpty() || stack.peek() < k) {
+			while (index <= k) {
 				stack.push(index++);
 				sb.append("+").append("\n");
+			}
 
-				while (stack.peek() != k) {
-					stack.push(index++);
-					sb.append("+").append("\n");
-				}
-				
+			if (!stack.isEmpty() && stack.peek() == k) {
 				stack.pop();
 				sb.append("-").append("\n");
-			} else if (stack.peek() > k) {
+			} else {
 				flag = false;
 				break;
-			} else {
-				stack.pop();
-				sb.append("-").append("\n");
 			}
 		}
 
