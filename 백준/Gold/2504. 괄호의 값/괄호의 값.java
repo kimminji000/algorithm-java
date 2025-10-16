@@ -48,6 +48,9 @@ public class Main {
 				sign /= 3;
 				break;
 			}
+
+			if (!flag)
+				break;
 		}
 
 		if (!stack.isEmpty() || !flag) {
