@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Stack;
+import java.util.ArrayDeque;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
@@ -9,22 +9,29 @@ public class Main {
 
 		String str = br.readLine();
 
-		Stack<Character> stack = new Stack<Character>();
+		ArrayDeque<Character> stack = new ArrayDeque<>();
 
-		int i = 0, count = 0;
-		while (i < str.length()) {
-			if (str.charAt(i) == '(' && str.charAt(i + 1) == ')') {
-				count += stack.size();
-				i += 2;
-			} else if (str.charAt(i) == '(') {
-				stack.push('(');
-				i++;
-			} else if (str.charAt(i) == ')') {
+		int cnt = 0;
+
+		for (int i = 0; i < str.length(); i++) {
+			Character c = str.charAt(i);
+
+			switch (c) {
+			case '(':
+				stack.push(c);
+				break;
+
+			case ')':
 				stack.pop();
-				count++;
-				i++;
+				if (str.charAt(i - 1) == '(') {
+					cnt += stack.size();
+				} else {
+					cnt++;
+				}
+				break;
 			}
 		}
-		System.out.println(count);
+
+		System.out.println(cnt);
 	}
 }
