@@ -14,54 +14,60 @@ public class Main {
 	static int[] dx = { -1, 1, 0, 0 };
 	static int[] dy = { 0, 0, -1, 1 };
 
-	private static int bfs(int jx, int jy, List<int[]> fire) {
-		int cnt = 0;
+	private static int[][] fireBfs(List<int[]> fires) {
+		int[][] fireTime = new int[r][c];
 
 		Queue<int[]> queue = new LinkedList<int[]>();
-		queue.add(new int[] { jx, jy });
-		for (int i = 0; i < fire.size(); i++) {
-			queue.add(new int[] { fire.get(i)[0], fire.get(i)[1] });
+		for (int i = 0; i < fires.size(); i++) {
+			fireTime[fires.get(i)[0]][fires.get(i)[1]] = 1;
+			queue.add(new int[] { fires.get(i)[0], fires.get(i)[1] });
 		}
 
-		boolean flag = false;
-
-		while (!queue.isEmpty() && !flag) {
+		while (!queue.isEmpty()) {
 			int[] now = queue.poll();
 
-			if (graph[now[0]][now[1]] == 'F') {
-				for (int i = 0; i < 4; i++) {
-					int nx = now[0] + dx[i];
-					int ny = now[1] + dy[i];
+			for (int i = 0; i < 4; i++) {
+				int nx = now[0] + dx[i];
+				int ny = now[1] + dy[i];
 
-					if (nx < 0 || ny < 0 || nx >= r || ny >= c) {
-						continue;
-					}
-					if (graph[nx][ny] != '#' && graph[nx][ny] != 'F') {
-						queue.add(new int[] { nx, ny });
-						graph[nx][ny] = 'F';
-					}
+				if (nx < 0 || ny < 0 || nx >= r || ny >= c) {
+					continue;
 				}
-			} else {
-				if (graph[now[0]][now[1]] != 'F') {
-					for (int i = 0; i < 4; i++) {
-						int nx = now[0] + dx[i];
-						int ny = now[1] + dy[i];
 
-						if (nx < 0 || ny < 0 || nx >= r || ny >= c) {
-							flag = true;
-							cnt = visited[now[0]][now[1]];
-							break;
-						}
-						if (graph[nx][ny] == '.' && visited[nx][ny] == 0) {
-							queue.add(new int[] { nx, ny });
-							visited[nx][ny] = visited[now[0]][now[1]] + 1;
-						}
-					}
+				if (graph[nx][ny] != '#' && fireTime[nx][ny] == 0) {
+					fireTime[nx][ny] = fireTime[now[0]][now[1]] + 1;
+					queue.add(new int[] { nx, ny });
 				}
 			}
 		}
 
-		return cnt;
+		return fireTime;
+	}
+
+	private static int bfs(int jx, int jy, int[][] fireTime) {
+		Queue<int[]> queue = new LinkedList<int[]>();
+		queue.add(new int[] { jx, jy });
+
+		while (!queue.isEmpty()) {
+			int[] now = queue.poll();
+
+			for (int i = 0; i < 4; i++) {
+				int nx = now[0] + dx[i];
+				int ny = now[1] + dy[i];
+
+				if (nx < 0 || ny < 0 || nx >= r || ny >= c) {
+					return visited[now[0]][now[1]];
+				}
+
+				if (graph[nx][ny] == '.' && visited[nx][ny] == 0
+						&& (visited[now[0]][now[1]] + 1 < fireTime[nx][ny] || fireTime[nx][ny] == 0)) {
+					visited[nx][ny] = visited[now[0]][now[1]] + 1;
+					queue.add(new int[] { nx, ny });
+				}
+			}
+		}
+
+		return 0;
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -74,7 +80,7 @@ public class Main {
 		graph = new char[r][c];
 		visited = new int[r][c];
 		int jx = 0, jy = 0;
-		List<int[]> fire = new ArrayList<int[]>();
+		List<int[]> fires = new ArrayList<int[]>();
 
 		for (int i = 0; i < r; i++) {
 			String str = br.readLine();
@@ -86,12 +92,14 @@ public class Main {
 					jy = j;
 					visited[i][j] = 1;
 				} else if (graph[i][j] == 'F') {
-					fire.add(new int[] { i, j });
+					fires.add(new int[] { i, j });
 				}
 			}
 		}
 
-		int cnt = bfs(jx, jy, fire);
+		int[][] fireTime = fireBfs(fires);
+
+		int cnt = bfs(jx, jy, fireTime);
 
 		if (cnt != 0) {
 			System.out.println(cnt);
