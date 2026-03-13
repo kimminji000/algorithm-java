@@ -10,29 +10,25 @@ public class Main {
 	static int n;
 
 	private static void chatBot(int x) {
+		String indent = "";
+		for (int i = 0; i < n - x; i++) {
+			indent += "____";
+		}
+
 		if (x == 0) {
 			for (int i = 0; i < base.length; i++) {
-				for (int j = 0; j < n - x; j++) {
-					sb.append("____");
-				}
-				sb.append(base[i]).append("\n");
+				sb.append(indent).append(base[i]).append("\n");
 			}
 			return;
 		}
 
 		for (int i = 0; i < str.length; i++) {
-			for (int j = 0; j < n - x; j++) {
-				sb.append("____");
-			}
-			sb.append(str[i]).append("\n");
+			sb.append(indent).append(str[i]).append("\n");
 		}
 
 		chatBot(x - 1);
 
-		for (int j = 0; j < n - x; j++) {
-			sb.append("____");
-		}
-		sb.append("라고 답변하였지.").append("\n");
+		sb.append(indent).append("라고 답변하였지.").append("\n");
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -41,7 +37,9 @@ public class Main {
 		n = Integer.parseInt(br.readLine());
 
 		System.out.println("어느 한 컴퓨터공학과 학생이 유명한 교수님을 찾아가 물었다.");
+
 		chatBot(n);
+
 		System.out.println(sb.toString());
 	}
 }
