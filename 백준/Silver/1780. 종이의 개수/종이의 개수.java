@@ -8,35 +8,25 @@ public class Main {
 	static int[] count = new int[3];
 
 	private static void check(int n, int x, int y) {
-		boolean flag = true;
+		for (int i = x; i < x + n; i++) {
+			for (int j = y; j < y + n; j++) {
+				if (arr[i][j] != arr[x][y]) {
+					int size = n / 3;
 
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				if (arr[x + i][y + j] != arr[x][y]) {
-					flag = false;
-					check(n / 3, x, y);
-					check(n / 3, x, y + n / 3);
-					check(n / 3, x, y + n / 3 * 2);
+					for (int dx = 0; dx < 3; dx++) {
+						for (int dy = 0; dy < 3; dy++) {
+							check(size, x + dx * size, y + dy * size);
+						}
+					}
 
-					check(n / 3, x + n / 3, y);
-					check(n / 3, x + n / 3, y + n / 3);
-					check(n / 3, x + n / 3, y + n / 3 * 2);
-
-					check(n / 3, x + n / 3 * 2, y);
-					check(n / 3, x + n / 3 * 2, y + n / 3);
-					check(n / 3, x + n / 3 * 2, y + n / 3 * 2);
-					break;
+					return;
 				}
 			}
 
-			if (!flag) {
-				break;
-			}
 		}
 
-		if (flag) {
-			count[arr[x][y] + 1]++;
-		}
+		count[arr[x][y] + 1]++;
+
 	}
 
 	public static void main(String[] args) throws IOException {
