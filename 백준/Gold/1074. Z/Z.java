@@ -4,45 +4,30 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-	static int cnt;
-	static int r, c;
+	static int r, c, cnt = 0;
 
-//	static void order(int n, int x, int y) { // 시간초과
-//		if (n == 1) {
-//			if (x == r && y == c) {
-//				System.out.println(cnt);
-//			}
-//
-//			cnt++;
-//			return;
-//		}
-//
-//		order(n / 2, x, y);
-//		order(n / 2, x, y + n / 2);
-//		order(n / 2, x + n / 2, y);
-//		order(n / 2, x + n / 2, y + n / 2);
-//	}
-
-	static void order(int n, int x, int y) {
-		if (n == 1) {
+	private static void z(int n, int x, int y) {
+		if (n == 0) {
 			System.out.println(cnt);
 			return;
 		}
 
-		if (r < x + n / 2) {
-			if (c < y + n / 2) { // 칸이 0영역에 있으면
-				order(n / 2, x, y);
-			} else { // 칸이 1영역에 있으면
-				cnt += Math.pow(n / 2, 2);
-				order(n / 2, x, y + n / 2);
+		int size = (int) Math.pow(2, n - 1);
+
+		if (r < x + size) {
+			if (c < y + size) {
+				z(n - 1, x, y);
+			} else {
+				cnt += size * size;
+				z(n - 1, x, y + size);
 			}
 		} else {
-			if (c < y + n / 2) { // 칸이 3영역에 있으면
-				cnt += Math.pow(n / 2, 2) * 2;
-				order(n / 2, x + n / 2, y);
-			} else { // 칸이 4영역에 있으면
-				cnt += Math.pow(n / 2, 2) * 3;
-				order(n / 2, x + n / 2, y + n / 2);
+			if (c < y + size) {
+				cnt += size * size * 2;
+				z(n - 1, x + size, y);
+			} else {
+				cnt += size * size * 3;
+				z(n - 1, x + size, y + size);
 			}
 		}
 	}
@@ -56,6 +41,7 @@ public class Main {
 		r = Integer.parseInt(st.nextToken());
 		c = Integer.parseInt(st.nextToken());
 
-		order((int) Math.pow(2, n), 0, 0);
+		z(n, 0, 0);
+
 	}
 }
