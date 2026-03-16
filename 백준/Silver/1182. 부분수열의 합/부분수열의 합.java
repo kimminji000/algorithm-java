@@ -4,22 +4,15 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-	static int cnt, s, sum = 0;
+	static int cnt, s;
 	static int[] num;
 
-	private static void combi(int n, int r, int start, int depth) {
-		if (depth == r) {
-			if (sum == s) {
-				cnt++;
-			}
-
-			return;
+	private static void find(int n, int start, int sum) {
+		if (sum == s) {
+			cnt++;
 		}
-
 		for (int i = start; i < n; i++) {
-			sum += num[i];
-			combi(n, r, i + 1, depth + 1);
-			sum -= num[i];
+			find(n, i + 1, sum + num[i]);
 		}
 	}
 
@@ -38,8 +31,10 @@ public class Main {
 			num[i] = Integer.parseInt(st.nextToken());
 		}
 
-		for (int i = 1; i <= n; i++) {
-			combi(n, i, 0, 0);
+		find(n, 0, 0);
+
+		if (s == 0) {
+			cnt--; // 공집합 제거
 		}
 
 		System.out.println(cnt);
