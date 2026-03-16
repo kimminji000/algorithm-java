@@ -3,31 +3,26 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class Main {
-	static int n;
-	static int cnt;
-	static boolean[] graph;
+	static boolean[] column;
 	static boolean[] slash;
 	static boolean[] bslash;
+	static int n, cnt = 0;
 
-	static void setQueen(int row) {
-		if (row == n) {
+	private static void setQueen(int r) {
+		if (r == n) {
 			cnt++;
 			return;
 		}
 
-		for (int col = 0; col < n; col++) {
-			if (!isPossible(row, col)) {
-				continue;
+		for (int i = 0; i < n; i++) {
+			if (!column[i] && !slash[r + i] && !bslash[r - i + n - 1]) {
+				column[i] = slash[r + i] = bslash[r - i + n - 1] = true;
+
+				setQueen(r + 1);
+
+				column[i] = slash[r + i] = bslash[r - i + n - 1] = false;
 			}
-
-			graph[col] = slash[row + col] = bslash[row - col + n - 1] = true;
-			setQueen(row + 1);
-			graph[col] = slash[row + col] = bslash[row - col + n - 1] = false;
 		}
-	}
-
-	static boolean isPossible(int row, int col) {
-		return !graph[col] && !slash[row + col] && !bslash[row - col + n - 1];
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -35,11 +30,10 @@ public class Main {
 
 		n = Integer.parseInt(br.readLine());
 
-		graph = new boolean[n];
-		slash = new boolean[2 * n - 1]; // /
-		bslash = new boolean[2 * n - 1]; // \
+		column = new boolean[n];
+		slash = new boolean[2 * n - 1];
+		bslash = new boolean[2 * n - 1];
 
-		cnt = 0;
 		setQueen(0);
 
 		System.out.println(cnt);
